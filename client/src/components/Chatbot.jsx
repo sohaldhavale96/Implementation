@@ -38,7 +38,7 @@ const theme = createTheme({
 });
 
 const DRAWER_WIDTH = 240;
-const API_BASE_URL = 'http://localhost:5000/api/chats';
+const API_BASE_URL = 'https://implementation-sufb.onrender.com/api/chats';
 
 function Chatbot() {
     const [message, setMessage] = useState('');
@@ -74,7 +74,7 @@ function Chatbot() {
         }
     };
 
-    const API_MESSAGE_URL = 'http://127.0.0.1:5000/api/message';
+    const API_MESSAGE_URL = 'https://implementation-sufb.onrender.com/api/message';
 
     const handleSend = async () => {
         if (!message.trim()) return;
@@ -89,7 +89,7 @@ function Chatbot() {
             console.log(chatHistory);
     
             // Adjusted to send the 'messages' array
-            const response = await fetch("http://localhost:5000/api/message", {
+            const response = await fetch("https://implementation-sufb.onrender.com/api/message", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -202,7 +202,7 @@ function Chatbot() {
                             <TextField
                                 fullWidth
                                 variant="outlined"
-                                placeholder="अपना संदेश यहाँ टाइप करें..."
+                                placeholder="Start chatting ..."
                                 size="small"
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}

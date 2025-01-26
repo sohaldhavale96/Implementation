@@ -16,7 +16,8 @@ import {
     ListItem,
     ListItemText,
     ListItemIcon,
-    Divider
+    Divider,
+    CircularProgress
 } from '@mui/material';
 import { Close, Send, Agriculture, Chat as ChatIcon } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
@@ -79,42 +80,35 @@ function Chatbot() {
     const handleSend = async () => {
         if (!message.trim()) return;
         setIsLoading(true);
-    
+
         const newMessage = { type: 'user', content: message };
         setChatHistory([...chatHistory, newMessage]);
         setMessage('');
         setIsLoading(false);
-    
+
         try {
             console.log(chatHistory);
-    
-            // Adjusted to send the 'messages' array
-            const response = await fetch("https://implementation-sufb.onrender.com/api/message", {
+
+            const response = await fetch(API_MESSAGE_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    messages: [
-                        { content: message }
-                    ]
+                    messages: [{ content: message }]
                 }),
             });
-    
+
             const data = await response.json();
-            // Assuming the response contains the answer
             setChatHistory([...chatHistory, newMessage, { type: 'bot', content: data.answer }]);
         } catch (error) {
             console.error('Error sending message:', error.message);
         }
     };
-    
-    
-
 
     return (
         <ThemeProvider theme={theme}>
-            <Box sx={{ display: 'flex', height: '100vh' }}>
+            <Box sx={{ display: 'flex', height: '100vh', flexDirection: { xs: 'column', sm: 'row' } }}>
                 <Drawer
                     variant="permanent"
                     sx={{
@@ -127,6 +121,7 @@ function Chatbot() {
                             borderRight: '1px solid',
                             borderColor: 'primary.light',
                         },
+                        display: { xs: 'none', sm: 'block' }, // Hide on small screens
                     }}
                 >
                     <Box sx={{ p: 2, backgroundColor: 'primary.main' }}>
@@ -158,7 +153,8 @@ function Chatbot() {
                             flex: 1,
                             overflow: 'auto',
                             p: 2,
-                            backgroundColor: 'background.default'
+                            backgroundColor: 'background.default',
+                            maxHeight: 'calc(100vh - 160px)', // Adjust height for chat box
                         }}
                     >
                         {chatHistory.map((chat, index) => (
